@@ -604,6 +604,8 @@ to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.
 from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to
 pick a specific range to use.
 
+* `allow_route_overlap` - (Optional) If true, allow allocation of cluster CIDR ranges that overlap with certain kinds of network routes. By default we do not allow cluster CIDR ranges to intersect with any user declared routes. With allowRouteOverlap == true, we allow overlapping with CIDR ranges that are larger than the cluster CIDR range.
+
 <a name="nested_master_auth"></a>The `master_auth` block supports:
 
 * `client_certificate_config` - (Required) Whether client certificate authorization is enabled for this cluster.  For example:

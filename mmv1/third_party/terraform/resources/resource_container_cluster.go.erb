@@ -1036,6 +1036,14 @@ func resourceContainerCluster() *schema.Resource {
 							Description:      `The IP address range of the services IPs in this cluster. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. /14) to have a range chosen with a specific netmask. Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick a specific range to use.`,
 						},
 
+						"allow_route_overlap": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							ForceNew:    true,
+							Default:     false,
+							Description: `If true, allow allocation of cluster CIDR ranges that overlap with certain kinds of network routes. By default we do not allow cluster CIDR ranges to intersect with any user declared routes. With allowRouteOverlap == true, we allow overlapping with CIDR ranges that are larger than the cluster CIDR range.`,
+						},
+
 						// User manages secondary ranges manually
 						"cluster_secondary_range_name": {
 							Type:          schema.TypeString,
@@ -3178,6 +3186,7 @@ func expandIPAllocationPolicy(configured interface{}, networkingMode string) (*c
 		UseIpAliases:          networkingMode == "VPC_NATIVE" || networkingMode == "",
 		ClusterIpv4CidrBlock:  config["cluster_ipv4_cidr_block"].(string),
 		ServicesIpv4CidrBlock: config["services_ipv4_cidr_block"].(string),
+		AllowRouteOverlap:     config["allow_route_overlap"].(bool),
 
 		ClusterSecondaryRangeName:  config["cluster_secondary_range_name"].(string),
 		ServicesSecondaryRangeName: config["services_secondary_range_name"].(string),
